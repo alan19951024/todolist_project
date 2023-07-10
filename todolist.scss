@@ -178,9 +178,8 @@ input[type="text"] {
     }
 
     &:hover a.delete {
+      transform: scale(1.6);
       opacity: 1;
-      width: 22px;
-      height: 22px;
     }
   }
 }

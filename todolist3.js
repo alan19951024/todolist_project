@@ -132,12 +132,18 @@ function count() {
 const cleanAll = document.querySelector(".clean_all")
 cleanAll.addEventListener("click", function (e) {
     e.preventDefault()
-    data = data.filter((item) => item.complete === false)
-    if (data.length != 0 || data == "") {
+
+    unData = data.filter((item) => item.complete === false)
+    doData = data.filter((item) => item.complete === true)
+    console.log(doData)
+    if (doData.length == 0 || doData == "") {
         alert("無任何已完成項目可清除")
     } else {
-        updateData()
+        confirm(`確定清除所有已完成的待辦事項？`) === true
+        data = unData
+        updateData(data)
     }
+    localStorage.setItem("listdata", JSON.stringify(doData))
 
 })
 renderdata(data)
