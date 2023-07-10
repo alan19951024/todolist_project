@@ -1,2 +1,2 @@
 # todolist_project
- javascrip_todolist專案練習
+todolist專案練習
