@@ -143,6 +143,7 @@ cleanAll.addEventListener("click", function (e) {
         data = unData
         updateData(data)
     }
+    // 刪除local暫存項目
     localStorage.setItem("listdata", JSON.stringify(doData))
 
 })
