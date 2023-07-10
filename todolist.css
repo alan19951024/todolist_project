@@ -148,6 +148,7 @@ input[type=text]::placeholder {
   display: block;
   width: 1rem;
   height: 1rem;
+  /* 刪除圖片 */
   background-image: url("cancel_FILL0_wght600_GRAD0_opsz48.svg");
   background-size: contain;
 }
