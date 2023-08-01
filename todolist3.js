@@ -3,6 +3,7 @@ const btnAdd = document.querySelector(".btn_add")
 const list = document.querySelector(".list")
 const tab = document.querySelector(".tab")
 const tabs = document.querySelectorAll(".tab li")
+const tabAll = document.querySelector('[data-tab="all"]');
 JSON.parse(localStorage.getItem('listItem')) || []; //取出存在localStorage裡的資料並轉為陣列型別，如果瀏覽器裡沒存資料則跑空值
 
 
@@ -28,7 +29,7 @@ function renderdata(data) {
 // 新增代辦  False:未完成 true:已完成
 btnAdd.addEventListener('click', addDo)
 function addDo() {
-    if (text.value === '') {
+    if (text.value.trim() === '') {
         alert('請輸入代辦事項')
         return
     }
@@ -36,7 +37,7 @@ function addDo() {
     // 組出data要用到的物件
     let obj = {
         // input 的值
-        content: text.value,
+        content: text.value.trim(),
         // id 用 getTime() 取毫秒
         id: new Date().getTime(),
         //紀錄待辦事項完成狀態
@@ -53,7 +54,16 @@ function addDo() {
 text.addEventListener("keyup", function (e) {
     if (e.key === "Enter") {
         addDo()
+        toggleStatus = e.target.dataset.text;
+        // console.log(toggleStatus)
+        tabs.forEach(function (item) {
+            console.log(item)
+            item.classList.remove('active')
+        });
+        tabAll.classList.add('active')
+        renderdata(data)
     }
+    
 })
 
 
@@ -84,7 +94,7 @@ list.addEventListener("click", function (e) {
 // 頁籤更換 css ACTIVE調整
 tab.addEventListener('click', function (e) {
     toggleStatus = e.target.dataset.tab;
-    // console.log(toggleStatus)
+    console.log(toggleStatus)
     tabs.forEach(function (item) {
         item.classList.remove('active')
     });
@@ -118,14 +128,18 @@ function updateData() {
 function count() {
     const todoNum = document.querySelector(".todoNum")
     let todoCount = (data.filter((item) => item.complete === false)).length
-    todoNum.innerHTML = `<p class="todoNum">${todoCount}個待完成項目</p>`
-    console.log(todoNum)
-    console.log(todoCount)
+    if (todoCount === 0) {
+        todoNum.innerHTML = `<p class="todoNum">目前沒有待完成事項</p>`
+    } else {
+        todoNum.innerHTML = `<p class="todoNum">${todoCount}個待辦事項</p>`
+    }
     const doNum = document.querySelector(".doNum")
     let doCount = (data.filter((item) => item.complete === true)).length
-    doNum.innerHTML = `<p class="doNum">${doCount}個已完成項目</p>`
-    console.log(doNum)
-    console.log(doCount)
+    if(doCount === 0){
+        doNum.innerHTML = `<p class="doNum">目前沒有已完成項目</p>`
+    }else{
+        doNum.innerHTML = `<p class="doNum">${doCount}個已完成項目</p>`
+    }
 }
 
 // 清除已完成項目
@@ -139,9 +153,15 @@ cleanAll.addEventListener("click", function (e) {
     if (doData.length == 0 || doData == "") {
         alert("無任何已完成項目可清除")
     } else {
-        confirm(`確定清除所有已完成的待辦事項？`) === true
-        data = unData
-        updateData(data)
+        if(confirm(`確定清除所有已完成的待辦事項？`) === true){
+            data = unData
+            updateData(data)
+        }
+        else{
+            return false
+        }
+        
+
     }
     localStorage.setItem("listdata", JSON.stringify(doData))
 
